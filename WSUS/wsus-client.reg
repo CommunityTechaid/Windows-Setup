@@ -1,0 +1,31 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate]
+WUServer=http://your-WSUS-server:port
+# sets the WSUS server by HTTP name
+
+WUStatusServer=http://your-WSUS-server:port
+# sets the SUS statistics server by HTTP name
+
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU]
+UseWUServer=dword:00000001
+# Use server that is running Software Update Services
+
+AUOptions=dword:00000004 
+# Automatically download and scheduled installation.
+
+ScheduledInstallDay=dword:00000000
+# Set scheduled install day to every day
+
+ScheduledInstallTime=dword:00000000
+# Set scheduled install time to automatic
+
+AUPowerManagement=dword:00000001
+# automatically wake up the system to install scheduled updates
+
+DetectionFrequencyEnabled=dword:00000001
+# Enable automatic checking for updates (other than default every 22 hours)
+
+DetectionFrequency=dword:00000001
+# Set frequency of checks to every hour
