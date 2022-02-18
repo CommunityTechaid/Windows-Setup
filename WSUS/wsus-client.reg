@@ -2,10 +2,10 @@ Windows Registry Editor Version 5.00
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate]
 WUServer=http://your-WSUS-server:port
-; sets the WSUS server by HTTP name
+; sets the WSUS server by HTTP name and port (normally 8530)
 
 WUStatusServer=http://your-WSUS-server:port
-; sets the SUS statistics server by HTTP name
+; sets the SUS statistics server by HTTP name and port (normally 8530)
 
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU]
