@@ -13,7 +13,7 @@ Windows Registry Editor Version 5.00
 ; Use server that is running Software Update Services
 
 "AUOptions"="dword:00000004 "
-; Automatically download and scheduled installation.
+; Automatically download and schedule installation.
 
 "ScheduledInstallDay"="dword:00000000"
 ; Set scheduled install day to every day
