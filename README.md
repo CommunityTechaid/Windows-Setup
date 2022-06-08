@@ -9,8 +9,8 @@ The current process:
 - install windows updates
 
 The aim:
-- consolidate installing Windows and programmes into one step with a customised ISO
-- speed up the update step with a WSUS server in the TechAid office that can cache the needed files
+- have virtualised machine running in the CTA office to provide updates via the P2P update distribution built into Windows 10.
+- consolidate installing Windows and programmes into one step with a customised ISO, using the virtual machine as the reference
 
 Nice to haves:
 - PXE setup to deploy windows avoid having to burn ISOs to USB sticks etc
