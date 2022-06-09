@@ -39,7 +39,7 @@ We'll cover the process of:
 
 ## Creating a custom image
 
-- Start with a fresh install of Windows 10 (see ## Installing Windows from WDS)
+- Start with a VM with fresh install of Windows 10 (see ## Installing Windows from WDS)
 - On Windows Server:
     - Open Windows System Image Manager
 	- Create a new answer file (an .xml file that tweaks a Windows install both on capture and installation)
@@ -86,8 +86,20 @@ We'll cover the process of:
    - Install the CTA suite of programs via the installer.exe
    - Copy unattend.xml from Server to C:\Windows\System32\Sysprep\unattend.xml
    - Make sure any pending Windows Updates have been installed.
-   - Run (C:\Windows\System32\Sysprep\) Sysprep.exe and select:
+   - Run (C:\Windows\System32\Sysprep\) Sysprep.exe with the following settings:
       - System Cleanup Action: Enter System Out-Of-Box Experience
       - Generalize: checked
       - Shutdown options: shutdown
+   - Set VM to boot over the network to the Windows Setup 
+   - Once into Windows setup, press Shift+F10 to get a command prompt.
+   - Run `net use z: \\$WDS-Server-IP\REMINST /user:Administrator` to set the Setup Environment to use the WDS Server as network share.
+   - Change working directory to the z: drive (`z:`)
+   - Run `dism /Capture-Image /ImageFile:NameOfCustomImage.wim /CaptureDir:C:\ /Name:"Name of Custom Image for WDS"`
+- Once complete, return to the WDS Server:
+   - Verify new custom image exists in the C:\RemoteInstall\ folder.
+   - Expand Servers > WinServer > Install Images
+   - Right click on corresponding Image Group and Add Install Image selecting the newly created custom image.
+   - Right click on the custom image and edit properties:
+       - Check "Allow image to install in unattended mode".
+       - Select the unattend.xml file used and apply to image.
 
