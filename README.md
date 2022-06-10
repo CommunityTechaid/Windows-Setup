@@ -24,7 +24,7 @@ The aim:
 
 We'll cover the process of:
 - [Setting up Windows Server](#setting-up-windows-server)
-- [Setting up Windows Deployment Service (WDS)](#setting-up-windows-deployment-service-(wds))
+- [Setting up Windows Deployment Service (WDS)](#setting-up-windows-deployment-service-wds)
 - [Installing Windows from WDS](#installing-windows-from-wds)
 - [Creating a custom Window Image and adding it to WDS](#creating-a-custom-image)
 
@@ -77,16 +77,16 @@ We'll cover the process of:
         - amd64_Microsoft-Windows-Shell-Setup > UserAccounts, right click and add to Pass 7.
         - amd64_Microsoft-Windows-International-Core, right click and add to Pass 7.
     - Under the Answer File view:
-        - Select the 1 windows PE / amd64_Microsoft-Windows-Setup / UserData entry and set the AcceptEula property to True. 
+        - Select the 1 windows PE / amd64_Microsoft-Windows-Setup / UserData entry and set the AcceptEula property to True.\
           (Ref: https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-setup-userdata)
-        - Select the 4 Specialise / amd64_Microsoft-Windows-Shell-Setup entry and set CopyProfile to True 
+        - Select the 4 Specialise / amd64_Microsoft-Windows-Shell-Setup entry and set CopyProfile to True.\
           (Ref: https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-shell-setup-copyprofile)
         - Select the 7 oobeSystem / amd64_Microsoft-Windows-International-Core entry and set the following properties:
             - InputLocale: en-GB
             - SystemLocale: en-GB
             - UILanguage: en-GB
             - UILanguageFallback: en-US
-            - UserLocale: en-GB
+            - UserLocale: en-GB\
               (Ref: https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-international-core)
     	- Select the 7 oobeSystem / amd64_Microsoft-Windows-Shell-Setup / OOBE entry and set the following properties:
             - HideEULAPage: true
@@ -94,7 +94,7 @@ We'll cover the process of:
             - HideOnlineAccountScreen: true
             - HideWirelessSetupInOOBE: true
             - ProtectYourPC: 2
-            - Expand OOBE entry, right click and delete VMModeOptimisations
+            - Expand OOBE entry, right click and delete VMModeOptimisations\
               (Ref: https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-shell-setup-oobe)
         - Expand the 7 oobeSystem / amd64_Microsoft-Windows-Shell-Setup / UserAccounts entry:
             - Set AdministratorPassword
@@ -104,7 +104,7 @@ We'll cover the process of:
                 - Description: User
                 - DisplayName: User
                 - Name: User
-            - Expand LocalAccount, select Password entity and set the value property to set the user's password.
+            - Expand LocalAccount, select Password entity and set the value property to set the user's password.\
               (Ref: https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-shell-setup-useraccounts)
 
 - Save file as unattend.xml
