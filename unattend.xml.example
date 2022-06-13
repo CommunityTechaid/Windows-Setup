@@ -30,6 +30,7 @@
                         <Description>User</Description>
                         <DisplayName>User</DisplayName>
                         <Name>User</Name>
+                        <Group>Administrators</Group>
                     </LocalAccount>
                 </LocalAccounts>
             </UserAccounts>

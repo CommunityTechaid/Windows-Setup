@@ -103,6 +103,7 @@ We'll cover the process of:
             - Set the new LocalAccount properties:
                 - Description: User
                 - DisplayName: User
+                - Groups: Administrators
                 - Name: User
             - Expand LocalAccount, select Password entity and set the value property to set the user's password.\
               (Ref: https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-shell-setup-useraccounts)
