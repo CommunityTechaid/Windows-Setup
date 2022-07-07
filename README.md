@@ -31,7 +31,7 @@ We'll cover the process of:
 ## Setting up Windows Server
 
 ...
-- Install Assessment and Deployment Toolkit
+- Install Assessment and Deployment Toolkit, need for Windows System Image Manager to compile / edit answer files.
 
 ## Setting up Windows Deployment Service (WDS)
 
@@ -71,14 +71,33 @@ We'll cover the process of:
             - Return to Windows System Image Manager
             - Select Tools > Create Catalog and then import the WIM you just exported and let it do it's thing.
     - Under the Windows Image view, expand the Catalog > Components and add the following to the answer file:
+        - amd64_Microsoft-Windows-Deployment > RunSynchronous > RunSynchronousCommand, right click and add to Pass 4.
         - amd64_Microsoft-Windows-Setup > UserData, right click and add to Pass 1.
         - amd64_Microsoft-Windows-Shell-Setup, right click and add to Pass 4.
         - amd64_Microsoft-Windows-Shell-Setup > OOBE, right click and add to Pass 7.
         - amd64_Microsoft-Windows-Shell-Setup > UserAccounts, right click and add to Pass 7.
+        - amd64_Microsoft-Windows-Shell-Setup > WindowsDeploymentServices, right click and add to Pass 1.
         - amd64_Microsoft-Windows-International-Core, right click and add to Pass 7.
+        - amd64_Microsoft-Windows-International-Core-WinPE, right click and add to Pass 1.
     - Under the Answer File view:
+        - Select the 1 windows PE / amd64_Microsoft-Winodws-Internation-Core-WinPE and set:
+            - InputLocale: en-GB
+            - SystemLocale: en-GB
+            - UILanguage: en-GB
+            - UserLocale: en-GB
+        - Expand amd64_Microsoft-Winodws-Internation-Core-WinPE and select the SetupUILanguage entry and then set:
+            - UILanguage: en-GB
         - Select the 1 windows PE / amd64_Microsoft-Windows-Setup / UserData entry and set the AcceptEula property to True.\
           (Ref: https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-setup-userdata)
+        - Expand WindowsDeploymentServices / Login and select the Credentials entry and set:
+            - Domain: WindowsServer
+            - Password: $password
+            - Username: $username
+        - Select the 4 Specialise / amd64_Microsoft-Deployment / RunSynchronous / RunSynchronousCommand entry and set:
+            - Description: Disable Cortana Voice during OOBE
+            - Order: 1
+            - Path: cmd.exe /c reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE /v DisableVoice /t REG_DWORD /d 1 /f\
+            (Ref: https://social.technet.microsoft.com/Forums/en-US/4eb2c26c-2f15-4a0d-ba4f-0955215994df/silence-cortana-during-windows-setup?forum=win10itprosetup)
         - Select the 4 Specialise / amd64_Microsoft-Windows-Shell-Setup entry and set CopyProfile to True.\
           (Ref: https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-shell-setup-copyprofile)
         - Select the 7 oobeSystem / amd64_Microsoft-Windows-International-Core entry and set the following properties:
@@ -135,6 +154,7 @@ We'll cover the process of:
 ### Step 3 - Back on the Windows Server:
 
 - Verify new custom image exists in the C:\RemoteInstall\ folder.
+- Open up Windows Deployment Services
 - Expand Servers > WinServer > Install Images
 - Right click on corresponding Image Group and Add Install Image selecting the newly created custom image.
 - Right click on the custom image and edit properties:
