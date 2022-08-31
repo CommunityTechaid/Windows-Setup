@@ -30,13 +30,22 @@ We'll cover the process of:
 
 ## Setting up Windows Server
 
-...
-- Install Assessment and Deployment Toolkit, need for Windows System Image Manager to compile / edit answer files.
+- Boot from ISO and follow installation instructions
+- Check for and install updates
+- Install Assessment and Deployment Toolkit, need for Windows System Image Manager to compile / edit answer files. Download from https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install (Select latest Windows 10 option). Follow dialogue to install, Microsoft User Experience / Application Virtualisation components can be deselected to save space.
 
 ## Setting up Windows Deployment Service (WDS)
-
-...
-...
+- Add the Windows Deployment Service to the server:
+    Server Manager > Manage > Add Roles and Features > Next > Next > Next > Select Windows Deployment Services and follow remaining dialogues
+- Download Windows 10 .iso (https://www.microsoft.com/en-gb/software-download/windows10ISO)
+    - Mount .iso (will presume under E:)
+    - `dism /Get-WimInfo /WimFile:E\sources\install.esd` to get list of possible images. Note index of Windows 10 Home (will presume 1)
+    - `dism /export-image /SourceImageFile:E:\sources\install.esd /SouceIndex:1 /DestinationImagefile:C:\Shared\install.wim /Compress:max /CheckIntegrity`
+    - Copy boot.wim to same destination folder
+- Open WDS, configure server following dialogue pointing to previous destination folder for .wims
+- You now have added a base image to WDS
+- Right click $ServerName > Properties:
+    - Boot: Set to "Continue to PXE boot unless the user presses the ESC key"
 
 ## Installing Windows from WDS
 
@@ -138,9 +147,9 @@ We'll cover the process of:
 - Sign in as Administrator
 - Open Control Panel > User Accounts > Manage Accounts
 - Select User, then delete User and remove files.
+- Make sure any pending Windows Updates have been installed.
 - Install the CTA suite of programs via the installer.exe
 - Copy unattend.xml from Server to C:\Windows\System32\Sysprep\unattend.xml
-- Make sure any pending Windows Updates have been installed.
 - Run (C:\Windows\System32\Sysprep\) Sysprep.exe with the following settings:
 - System Cleanup Action: Enter System Out-Of-Box Experience
     - Generalize: checked
@@ -149,7 +158,7 @@ We'll cover the process of:
 - Once into Windows setup, press Shift+F10 to get a command prompt.
 - Run `net use z: \\$WDS-Server-IP\REMINST /user:Administrator` to set the Setup Environment to use the WDS Server as network share.
 - Change working directory to the z: drive (`z:`)
-- Run `dism /Capture-Image /ImageFile:NameOfCustomImage.wim /CaptureDir:C:\ /Name:"Name of Custom Image for WDS"`
+- Run `dism /Capture-Image /ImageFile:NameOfCustomImage.wim /CaptureDir:C:\ /Name:"Name of Custom Image for WDS" /ScratchDir:z:\ /CheckIntegrity /Verify`
 
 ### Step 3 - Back on the Windows Server:
 

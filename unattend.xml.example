@@ -17,10 +17,6 @@
                 <ProtectYourPC>2</ProtectYourPC>
             </OOBE>
             <UserAccounts>
-                <AdministratorPassword>
-                    <Value>YwBoAGEAbgBnAGUAbQBlAEEAZABtAGkAbgBpAHMAdAByAGEAdABvAHIAUABhAHMAcwB3AG8AcgBkAA==</Value>
-                    <PlainText>false</PlainText>
-                </AdministratorPassword>
                 <LocalAccounts>
                     <LocalAccount wcm:action="add">
                         <Password>
