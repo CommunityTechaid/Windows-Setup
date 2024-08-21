@@ -30,7 +30,7 @@ We'll cover the process of:
 
 ## Setting up Windows Server
 
-- Boot from ISO and follow installation instructions
+- Boot from ISO and follow installation instructions (Standard Evaluation, desktop experience)
 - Check for and install updates
 - Install Assessment and Deployment Toolkit, need for Windows System Image Manager to compile / edit answer files. Download from https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install (Select latest Windows 10 option). Follow dialogue to install, Microsoft User Experience / Application Virtualisation components can be deselected to save space.
 
@@ -39,7 +39,7 @@ We'll cover the process of:
     Server Manager > Manage > Add Roles and Features > Next > Next > Next > Select Windows Deployment Services and follow remaining dialogues
 - Download Windows 10 .iso (https://www.microsoft.com/en-gb/software-download/windows10ISO)
     - Mount .iso (will presume under E:)
-    - `dism /Get-WimInfo /WimFile:E\sources\install.esd` to get list of possible images. Note index of Windows 10 Home (will presume 1)
+    - `dism /Get-WimInfo /WimFile:E:\sources\install.esd` to get list of possible images. Note index of Windows 10 Home (will presume 1)
     - `dism /export-image /SourceImageFile:E:\sources\install.esd /SouceIndex:1 /DestinationImagefile:C:\Shared\install.wim /Compress:max /CheckIntegrity`
     - Copy boot.wim to same destination folder
 - Open WDS, configure server following dialogue pointing to previous destination folder for .wims
@@ -88,27 +88,34 @@ We'll cover the process of:
         - amd64_Microsoft-Windows-Shell-Setup > WindowsDeploymentServices, right click and add to Pass 1.
         - amd64_Microsoft-Windows-International-Core, right click and add to Pass 7.
         - amd64_Microsoft-Windows-International-Core-WinPE, right click and add to Pass 1.
+
     - Under the Answer File view:
         - Select the 1 windows PE / amd64_Microsoft-Winodws-Internation-Core-WinPE and set:
             - InputLocale: en-GB
             - SystemLocale: en-GB
             - UILanguage: en-GB
             - UserLocale: en-GB
+        
         - Expand amd64_Microsoft-Winodws-Internation-Core-WinPE and select the SetupUILanguage entry and then set:
             - UILanguage: en-GB
+        
         - Select the 1 windows PE / amd64_Microsoft-Windows-Setup / UserData entry and set the AcceptEula property to True.\
           (Ref: https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-setup-userdata)
+        
         - Expand WindowsDeploymentServices / Login and select the Credentials entry and set:
             - Domain: WindowsServer
             - Password: $password
             - Username: $username
+        
         - Select the 4 Specialise / amd64_Microsoft-Deployment / RunSynchronous / RunSynchronousCommand entry and set:
             - Description: Disable Cortana Voice during OOBE
             - Order: 1
             - Path: cmd.exe /c reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE /v DisableVoice /t REG_DWORD /d 1 /f\
             (Ref: https://social.technet.microsoft.com/Forums/en-US/4eb2c26c-2f15-4a0d-ba4f-0955215994df/silence-cortana-during-windows-setup?forum=win10itprosetup)
+        
         - Select the 4 Specialise / amd64_Microsoft-Windows-Shell-Setup entry and set CopyProfile to True.\
           (Ref: https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-shell-setup-copyprofile)
+        
         - Select the 7 oobeSystem / amd64_Microsoft-Windows-International-Core entry and set the following properties:
             - InputLocale: en-GB
             - SystemLocale: en-GB
@@ -121,7 +128,7 @@ We'll cover the process of:
             - HideOEMRegistrationScreen: true
             - HideOnlineAccountScreen: true
             - HideWirelessSetupInOOBE: true
-            - ProtectYourPC: 2
+            - ProtectYourPC: 3
             - Expand OOBE entry, right click and delete VMModeOptimisations\
               (Ref: https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-shell-setup-oobe)
         - Expand the 7 oobeSystem / amd64_Microsoft-Windows-Shell-Setup / UserAccounts entry:
@@ -148,12 +155,15 @@ We'll cover the process of:
 - Open Control Panel > User Accounts > Manage Accounts
 - Select User, then delete User and remove files.
 - Make sure any pending Windows Updates have been installed.
+
+
 - Install the CTA suite of programs via the installer.exe
 - Copy unattend.xml from Server to C:\Windows\System32\Sysprep\unattend.xml
 - Run (C:\Windows\System32\Sysprep\) Sysprep.exe with the following settings:
 - System Cleanup Action: Enter System Out-Of-Box Experience
     - Generalize: checked
     - Shutdown options: shutdown
+
 - Set VM to boot over the network to the Windows Setup 
 - Once into Windows setup, press Shift+F10 to get a command prompt.
 - Run `net use z: \\$WDS-Server-IP\REMINST /user:Administrator` to set the Setup Environment to use the WDS Server as network share.
